@@ -253,7 +253,7 @@ public static void main(String[]args){
 
 ### 논리연산자
 
-![img.png](img.png)
+![img.png](image/img.png)
 * and 결합은 조건이 모두 true일 때 true로 만 처리된다
 * or결합은 둘 중 하나라도 true이면 true로 처리 된다
 
@@ -342,18 +342,18 @@ public class Operators{
   * 크게 나누면 정수, 소수, boolean, 참조자료형 별로 사용 가능한 연산자가 각각 존재
 
 #### 정수형에서 사용할 수 있는 연산자  
-![img_2.png](img_2.png)
+![img_2.png](image/img_2.png)
 * 정수형 타입의 연산을 할 때에는 자바에서 제공할 수 있는 연산자를 다 사용 할 수 있다
 
 
 #### 소수형에서 사용할 수 있는 연산자 
-![img_3.png](img_3.png)
+![img_3.png](image/img_3.png)
 * double과 float는 소수형이기 때문에 비트 연산이 불가능 하다
 
 #### boolean타입의 연산자
-![img_4.png](img_4.png)
+![img_4.png](image/img_4.png)
 * !, &, |, ^의 연산자들은 boolean타입 사이에 사용하면 비트연산자와 같지만 결과는 boolean타입으로 제공한다
-![img_5.png](img_5.png)
+![img_5.png](image/img_5.png)
 * &&와 &, ||와 |가 같아 보이지만 연산할 때는 다르다
    * &&의 경우 좌측에 있는 연산이 false이면  우측에 있는 연산을 하지 않는다
    * &는 좌측 연산 결과와 우측 연산 결과를 비교해야만 하기 때문에 모든 연산을 수행한다
