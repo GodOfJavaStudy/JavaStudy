@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body>
+<div id = outer>
+
+</div>
+
+<script>
+    const outer = document.getElementById('outer');
+
+    function move( content) {
+    const modal = document.createElement('button');
+    modal.setAttribute('class',content);
+    modal.innerText = content;
+    modal.addEventListener("click",()=> modal.style.display="block");
+    outer.append(modal);
+    }
+
+    function inner(index) {
+        const inner = document.createElement('button');
+        inner.setAttribute('name','innerDiv');
+        inner.innerText = index;
+        inner.innerText = index;
+        outer.append(inner);
+    }
+
+
+    let powerMove = ['Thomas', 'windMill', 'AirFlare', 'nine'];
+    for (let i = 0; i < powerMove.length; i++) {
+        inner(i);
+        document.getElementsByName('innerDiv').item(i).addEventListener("click", ()=>{
+            move(powerMove[i]);
+        });
+    }
+</script>
+</body>
+</html>
