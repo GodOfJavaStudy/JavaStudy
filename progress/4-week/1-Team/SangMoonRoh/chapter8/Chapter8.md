@@ -246,12 +246,14 @@ public class StaticBlock{
     public StaticBlock(){
         System.out.println("StaticBlock Constructor. ");
     }
+    
     static{ 
         System.out.println("*** First static block. ***");
         data = 3;
     }
+    
     static {
-        System.out.println("*** Second staic block. ***");
+        System.out.println("*** Second static block. ***");
         data = 5;
     }
     

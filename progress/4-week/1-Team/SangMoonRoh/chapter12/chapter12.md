@@ -2,6 +2,7 @@
 
 ## 모든 자바 클래스의 부모인 java.lang.object 클래스
 - 모든 클래스의 부모 클래스 Object
+
 ```java
 package c.inheritance;
 
@@ -69,7 +70,214 @@ public class ToString{
     thisObject.toStringMethod(thisObject);
   }
   public void toStringMethod(Object obj){
-      System.out.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
-  }
+      System.out.println(obj);
+      System.out.println(obj.toString());
+      System.out.println("plus " + obj);
+  }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
 } 
 ```
+- toStringMethod() 메서드의 가장 첫 줄에서는 객체를 그대로 출력,
+- 두번째 줄에서, toString() 메서드를 호출.
+- ToString 클래스에 전혀 선언되어 있지 않다.  
+- ToString 클래스는 Object 클래스의 상속을 자동으로 받는다.  
+toString() 메서드는 Object 클래스에 선언되어 있기 때문에, 이렇게 toString() 메서드를 호출해도 문제가 되지 않음.
+- 마지막 줄에서는 객체의 더하기 연산을 수행한다.
+참조 자료형의 더하기 연산은 String 만 가능하다.(일반적인 객체 더하기 제외)
+
+```java
+public void toStringMethod2() {
+    System.out.println(this);
+    System.out.println(toString());
+    System.out.println("plus" + this);
+        }
+```
+
+- this 키워드를 사용하면 자기 자신을 나타내는 객체를 안넘겨 주어도 된다.
+- toString() 으로 출력된 결과
+  - `getClass().getName() + '@' + Integer.toHexString(hashCode())`
+  - Object 클래스에 있는 getClass() 의 결과에 getName() 메서드를 부르면 현재 클래스의 패키지 이름과 클래스 이름이 나온다. 
+  - at('@')는 앞의 결과와 뒤의 결과를 구분하기 위한 구분자이다.
+  - 마지막 부분에는 객체의 해시 코드 값을 출력한다. hashCode() 메서드에서는 int 타입의 값을 리턴해준다. 그 값을 Integer 라는 클래스에서 제공하는 toHexString()  이라는 메서드를 활용하여 16진수로 변환하는 작업이 수행된다.
+  
+- ToString 클래스의 toString() 메서드를 Overriding
+```java
+package c.inheritance;
+
+public class ToString{
+  public static void main(String[] args) {
+    ToString thisObject = new ToString();
+    thisObject.toStringMethod(thisObject);
+  }
+  
+  public String toString (){
+      return "ToString class";
+  }
+}
+```
+
+```
+ToString class
+ToString class
+plus ToString class
+```
+
+- `toString`메서드를 Overriding 해서 자주 쓰는 예 = >  DTO 
+```java
+public class MemberDTO {
+    public String name;
+    public String phone;
+    public String email;
+}
+```
+- `toString` 이 없는 경우
+```
+MemberDTO dto = new MemberDTO("Sangmin", " 010XXXXYYYY', "javatuning@gmail.com");
+System.out.print("Name=" + dto.name + " Phone = " = dto.phone + " eMail="+ dto.email);
+```
+- `toString ` Overriding 한 경우
+```java
+public class MemberDTO {
+    //중간 생략
+  public String toString() {
+      return "Name=" + name + "Phone= " + phone + "eMail=" + email;
+  }
+}
+```
+- 사용 경우
+```java
+MemberDTO = new new MemberDTO("Sangmin", "010XXXXYYYY", "java");
+System.out.println(dto); // toString 자동 호출
+```
+- IDE에서 자동으로 생성을 도와준다.
+
+## 객체는 == 만으로 같은지 확인 안되니, equals()를 사용.
+- 기본자료형의 값 비교는 == , !=
+- 참조자료형에서는 값이 아닌 주소값 비교.
+- 참조자료형형 초기화시 참조자료형의 메모리에
+```java
+package c.inheriatnce;
+
+public class MemberDTO {
+    public String name;
+    public String phone;
+    public String email;
+    //이하 생략
+}
+```
+```java
+package c.inheritance;
+
+public class Equasls {
+  public static void main(String[] args) {
+    Equasls thisObject = new Equasls();
+    thisObject.equalMethod();
+  }
+  
+  public void equalMethod() {
+      MemberDTO obj1 = new MemberDTO("Sangmin");
+      MemberDTO obj2 = new MemberDTO("Sangmin");
+      
+      if (obj1 == obj2){
+          System.out.println("obj1 and obj2 is same");
+      } else {
+          System.out.println("obj1 and obj2 is different");
+      }
+  }
+}
+```
+```
+obj1 and obj2 is different //
+```
+  - 두 객체는 각각의 생성자를 사용하여 만들어서 주소값이 다름.
+  - 그 안에 속성값들은 name = "Sangmin", phone은 null, email도 null  로 동일하다
+  - 이같은 Object 클래스에 선언되어 있는 equals() 메서드를 Overriding해 놓아야야지만 제대로 된 비교 가능
+```java
+public void equalMethod2() { 
+    MemberDTO obj1 = new MemberDTO("Sangmin");
+    MemberDTO obj2 = new MemberDTO("Sangmin");
+    if(obj1.equals(obj2)){
+        System.out.println("obj1 and obj2 is same");
+        }else { 
+        System.out.println("obj1 and obj2 is dirfferent");
+        }
+        }
+```
+```java
+obj1 and obj2 is different
+```
+- 위 예제에서는 equals()메서드롤 비교를 하긴 했지만, 비교 대상 겍체인 MemberDTO클래스에서는 아직 equals() 메서드를 Overridng 하지 않았서 위와 같은 결과가 나온다.
+- 만약 이 매서드를 Overriding  하지 않으면 equals() 메서드에서는 hashCode() 값을 비교한다.
+hashCode() 값은 이미 이야기했지만, 해당 객체의 주소값을 리턴한다. 따라서 클래스의 인스턴스 변값들이 같다고 하더라도, 서로 다른 생성자로 객체를 생성했으면서 해시 코드가 다르니까 다르다는 결과가 나온 것.
+  
+- MemberDTO 클래스에 equals()메서드를 Overriding 하는 아래 예제
+```java
+package c.inheritance;
+
+public class MemberDTO {
+    public boolean equals(Object obj){
+        if (this == obj) return true; // 주소가 같으므로 true
+        if (obj == null) return false; // obj가 null이므로 false
+        if (getClass() != obj.getClass()) return false; //클래스의 종류가 다르므로 false
+        
+        MemeberDTO other = (MemeberDTO) obj; // 같은 클래스이므로 형 변환 실행
+      
+      //이제부터는 각 인스턴스 변수가 같은지 비교하는 작업 수행
+        
+        if (name = null){ // name 이 null일 때
+            if (other.name != null) return false; // 비교 대상의 name이 null이 아니면 false
+        }else if (!name.equals(other.name)) return false; // 두 개의 email 값이 다르면 false
+        
+        //name과 같은 비교 수행
+        if (email == null) { 
+            if (other.email != null) return falas;
+        }else if (!email.equals(other.email)) return false;
+    if(phone == null){
+        if(other.phone != null) return false;
+    }else if (!phone.equals(other.phone)) return false;
+    
+    // 모든 과정을 거치고 false를 리턴하지 않은 객체는 같은 값을 가지는 객체로 생각해서 true를 리턴한다.
+    return true;
+        
+  }
+}
+```
+- 위는 IDE가 생성해준 equals() 메서드이다.
+  - equals() 메서드를 Overriding할 떄에는 반드시 다음 다섯 가지의 조건을 만족시켜야한다.
+    - 재귀 (reflexive) : null이 아닌 x 라는 객체의 x.equals(x) 결과는 항상 true 여야 한다.
+    - 대칭(symmetric) : null이 아닌 x와 y 객체가 있을 때 y.equals(x)가 true를 리턴했다면 x.equals(y)도 반드시 true 를 리턴해야만 한다.
+    - 일관(consistent) : null 이 아닌 x와 y가 있을 때 객체가 변경되지 않은 상황에서는 몇 번을 호출하더라도, x.equals(y)의 결과는 항상 true 이거나 항상 false 여야만 한다.
+    - 타동적(transitive) : null이 아닌 x,y,z가 있을 때 x.equals(y)가 true를 리턴하고, y.equals(z)가 true를 리턴하면 x.equals(z)도 true를 리턴해야만 한다.
+    - null과 비교 : null이 아닌 x라는 객체의 x.equals(null)의 결과는 항상 false여야 한다.
+- 유의점 equals() 메서드를 Overriding 할 떄에는 hashCode()  메서드도 같이 Overriding 해야만 한다.
+- 이유는 equals() 메서드를 Overriding 해서 객체가 서로 같다고 이야기 할 수 있겠지만 그 값이 같다고 해서 그 객체의 주소 값이 같지는 않기 때문이다.
+- equals() 메서드의 결과가 true인데도 불구하고 hashCode() 메서드도 Object 클래스에서 제공하는 그대로를 사용하면 안된다.
+- IDE에서 자동으로 생성한 MemberDTO 클래스 hashCode 메서드가 다음과 같다.
+
+```java
+package c.inheritance;
+
+public class MemberDTO{
+    // 중간생략
+  public int hashCode(){
+      final int prime = 31;
+      int result = 1;
+      result = prime * result + ((email == null) ? 0 : email.hashCode());
+      result = prime * result + (((name ==null)) ? 0 : name.hashCode());
+      result = prime * result + (((phone ==null)) ? 0 : phone.hashCode());
+      return result;
+      
+  }
+}
+```
+
+## 객체의 고유값을 나타내는 hashcode()
+- hashCode() 메서드는 기본적으로 객체의 메모리 주소를 16진수로 리턴한다.    
+만약 어떤 두 개의 객체가 서로 동일하다면, hashCode() 값은 무조건 동일해야만 한다.  
+  따라서 equals() 메서드를 override하면 hashcode()메서드도 override 해서 동일한 결과가 나오도록 해야한다. (API내용)
+  
+- hashcode() 메서드를 구현할 때 지켜야하는 약속.
+  - 자바 애플리케이션이 수행되는 동안에 어떤 객체에 대해서 이메 서드가 호출될 때에는 항상 동일한 int값을 리턴해주어야 한다. 하지만 자바를 실행할 때마다 같은 값이어야 할 필요는 전혀 없다.
+  - 어떤 두개의 객체에 대하여 equlas() 메서드를 사용하여 비교한 결과가 true일 경우에, 두 객체의 hashcode() 메서드를 호출하면 동일한 int 값을 리턴해야만 한다.
+  - 두 객체를 equals() 메서드를 사용하여 비교한 결과 false를 리턴했다고 해서, hashCode() 메서드를 호출한 int 값이 무조건 달라야 할 필요는 없다. 하지만 이 경우에 서로 다른 int값을 제공하면 hashtable 의 성능을 향상시키는데 도움이 된다.
+  
+- 위와 같은 제약 때문에 여러분들이 직접 equlas() 메서드나 hashcode() 메서드를 작성하는 것은 권장되지 않는다.
