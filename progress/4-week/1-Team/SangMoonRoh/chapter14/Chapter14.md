@@ -255,4 +255,55 @@ error: unreported exception Exception ; must be caught or declared to be thrown
 
 ### 예외를 만들 수 도 있다.
 
-[comment]: <> (- Throwablde)
+- Error는 개발자의 영역이 아님.
+- Error가 아닌 Exception을 처리하는 예외 클래스는 개발자가 임의로 추가해서 만들 수 있다.
+  - 조건
+    - Throwable이나 그 자식 클래스의 상속을 받아야만 한다.
+    - Throwable 클래스의 상속을 받아도 되지만 Exception을 처리하는 클래스라면 `java.lang.Exception` 클래스의 상속을 받는 것이 좋다.
+```java
+package c.exception;
+
+public class MyException extends Exception {
+    public MyException(){
+        super();
+    }
+    public MyException(String message){
+        super(message);
+    }
+}
+```
+-  CustomException 클래스를 만들고 throwMyException() 이라는 메서드도 만들자.
+Exception 대신에 커스텀 예외를 사용하면 아래와 같다.
+```java
+package c.exceptiom;
+
+public class CustomerException {
+  public static void main(String[] args) {
+    CustomerException sample = new CustomerException();
+    try {
+        sample.throwMyException(13);
+    } catch (MyException mye){
+        mye.printStackTrace();
+    }
+  }
+  public void throwMyException(int number) throws MyException{
+      try {
+          if (number>12){
+              throw new MyException("Number is over than 12");
+          }
+      } catch (MyException e){
+          e.printStackTrace();
+      }
+  }
+}
+```
+- 만약 앞에서 `MyExceptiomn`이 얘외 클래스가 되려면 Throwable클래스의 자식 클래스가 되어야 한다고 명시되어 있다.  
+만약 MyException을 선언할 때 관련된 클래스를 확장하지 않았을 때에는 이 부분에서 제대로 컴파일이 되지 않는다.
+  
+### 자바 예외 처리 전략
+- 예외가 항상 발생하지 않고, 실행시에 발생할 확률이 매우 높은 경우에는 런타임 예외로 만드는것이 나을 수도 있다.
+  - extends Exception 대신에 extends RuntimeException 으로 선언하는 것이다.
+  - 해당 예외를 던지는 (throw) 메서드를 사용하더라도 try-catch 로 묶지 않아도 컴파일시에 예외가 발생하지 않는다.
+  - 이 경우에는 예외가 발생할 경우 해당 클래스를 호출하는다른 클래스에서 예외를 처리하도록 안전장치가 되어 있어야 한다.
+    - try-catch로 묶지 않은 메서드를 호출하는 메서드에서 예외를 처리하는 try-catch 가 되어 있는 것을 얘기함.
+  
