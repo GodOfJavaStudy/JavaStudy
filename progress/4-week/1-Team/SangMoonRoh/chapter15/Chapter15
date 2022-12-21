@@ -1,0 +1,172 @@
+# Chapter 15
+## String
+### 자바에서 가장 많이 사용하는 String 클래스
+#### String 클래스가 어떻게 선언되어 있는가?
+```java
+public final class String extends Object
+    implements Serialize, Comparable<String>, CharSequence
+```
+> 클래스가 final로 선언되어 있다면 ?
+> 확장 할 수 없음. extends 불가
+
+- <p style="color: orange"> `Serializable` 인터페이스는 구현해야 하는 메서드가 하나도 없는 특이한 인터페이스</p>
+    - Serializable 인터페이스를 구현한다고 선언해 놓으면, 해당 객체를 파일로 저장하거나 다른 서버에 전송 가능한 상태가 된다.
+  
+- Comparable이라는 인터페이스도 구현.
+    - compareTo()라는 메서드 하나만 선언되어 있다. ( 메서드 리턴 타입을 int로 주어 결과 상태만 주는 메서드)
+    
+- CharSequence
+    - 해당 클래스가 문자열을 다루기 위한 클래스라는 것을 명시적으로 나타내는 데 사용한다.
+    
+### String의 생성자에는 이런 것들이 있다.
+`String name = "Sangmoon, ROh";`
+- 캐릭터 셋은 문자의 집합을 의미.
+    - 한글, 일본어 처럼 특정 나라의 글자를 말한다.
+    - 디코딩은 일반적으로 암호화 되어 있거나 컴퓨터가 이해할 수 있는 값들을 알아보기 쉽게 변환하는 것을 말한다.
+    - ex) 특수문자의 특별한 문자라기보단 알파벳을 제외한 나라의 문자를 의미한다고 보는 것이 가장 쉽다.
+    - `java.nio.Charset` 클래스는 API에는 표준 캐릭터 셋이 정해져 있다. 
+    
+|캐릭터 셋 이름|설명|
+|-----------|---------|
+|US-ASCII|7비트 아스키|
+|ISO-8859-1| ISO 라틴 알파벳 |
+|UTF-8|8비트 UCS 변환 포맷|
+|UTF-16BE|16비트 UCS 변환 포맷 big-endian 바이트 순서를 가진다.|
+|UTF-16LE|16비트 UCS 변환 포맷 little-endian 바이트 순서를 가진다.|
+|UTF-16|16비트 UCS 변환 포맷, 바이트의 순서는 byte-order mark라는 것에 의해서 정해진다.|
+|EUC-Kr|8비트 문자 인코딩, EUC의 일종, 대표적인 한글 완성형 인코딩|
+|MS949|MicroSoft에서 만든 "한글 확장 완성형" 인코딩|
+
+- 한글 처리를 위해 자바에서 가장 많이 사용하는 캐릭터 셋 UTF-16.
+- UTF-8 이나 EUC-KR 을 많이 사용했지만 대부분은  UTF-16
+
+```java
+package c.string;
+
+public class StringSample{
+    public static void main(String[] args) {
+        StringSample sample = new StringSample();
+        sample.convert();
+    }
+ public void convert(){
+        try{
+            //예제 코드가 위치할 부분
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+ }   
+    
+}
+```
+
+    ![img.png](img.png)
+      
+- 이 중 사용 빈도가 높은
+    - String(byte[] bytes)
+    - String(byte[] bytes, String charsetName)
+-
+### String 문자열을 Byte로 변환하기
+
+|리턴 타입|메서드 이름 및 매개 변수| 설명|
+|------|----------|--------|
+|byte[]|getBytes()|기본 캐릭터 셋의 바이트 배열을 생성|
+|byte[]|getBytes(Charset charset)|지정한 캐릭터 셋 객체 타입으로 바이트 배열을 생성한다.|
+|byte[]|getBytes(String charsetName)|지정한 이름의 캐릭터 셋을 갖는 바이트 배열을 생성한다.|
+
+```java
+package c.string;
+
+public class StringSample{
+    public static void main(String[] args) {
+        StringSample sample = new StringSample();
+        sample.convert();
+    }
+ public void convert(){
+        try{
+            //예제 코드가 위치할 부분
+            String korean = "한글";
+            byte[] array1 = korean.getBytes();
+            for(byte data:array1){
+                System.out.print(data + " ");
+            }
+            System.out.println();
+            String korean2 = new String(array1);
+            System.out.println(korean2);
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+ }   
+}
+```
+```
+-57 -47 -79 -37
+한글
+```
+- 잘못된 캐릭터 셋으로 변환시에는 글자가 깨진다.
+
+#### 캐릭터 셋을 지정하는 메서드 및 생성자들 때문에 try-catch를 사용한다
+- byte 배열과 String 타입의 캐릭터 셋을 받는 생성자
+- getBytes() 메서드 중에서 String 타입의 캐릭터 셋을 받는 메서드
+
+- UnSupportedEncodingException 을 발생 시킬 수 있다.
+
+### 객체의 Null 체크는 반드시 필요하다.
+
+### String 의 내용을 비교하고 검색하는 메소드들도 있다.
+- 문자열의 길이를 확인하는 메서드
+- 문자열이 비어 있는지 확인하는 메서드
+- 문자열이 같은지 비교하는 메서드
+- 특정 조건에 맞는 문자열이 있는지를 확인하는 메서드
+
+```java
+package c.string;
+
+public class StringCompare(){
+    public static void main(String[] args) {
+        StringCompare sample = new StringCompare();
+    }
+}
+```
+|리턴 타입|메서드 이름 및 매개 변수|설명|
+|-----|--------------------|---------|
+|int|length()|문자열의 길이를 리턴한다.|
+|boolean | isEmpty()| 문자열이 비어 있는지를 확인한다. 비어 있으면 true를 리턴한다.|
+
+### 문자열이 같은지 비교하는 메서드
+|리턴 타입|메서드 이름 및 매개 변수|
+|-----|--------------------|
+|boolean|equals(Obejct anObject)|
+|boolean|equalsIgnoreCase(String anotherStr)|
+|boolean|compareTo(String anotherStr)|
+|boolean|contentEquals(CharSequence cs)|
+|boolean|contentEquals(StringBuffer sb)|
+
+- <b Style="color:aqua"> String을 ==로 비교하면 안되고 equals로 비교해야하는 이유  </b>
+    - Constant Pool 이라는 것이 존재하는데, 이 풀은 자바에서 객체들을 재사용하기 위해 Constant Pool 이라는 것이 만들어져 있고, String의 경우 동일한 값을 갖는 개체가 잇으면 이미 만든 객체를 재사용한다.  
+    - 값이 같더라도 new 를 사용하여 재생성하면 별도의 객체를 생성한다.
+
+### 특정 조건에 맞는 문자열이 있는지를 확인하는 메서드
+|리턴타입| 메서드 이름 및 매개 변수|
+|-------|--------------------|
+|boolean|startsWith(String prefix)|
+|boolean|startsWith(String prefix, int toffeset)|
+|boolean|endsWith(String suffix)|
+|boolean|contains(CharSequence s)|
+|boolean|matches(String regex)|
+|boolean|regionMatches(boolean ignoreCase, int toffset, String other, int ooffset, int len)|
+|boolean|regonMatches(int toffset, String other, int ooffset, int len)|
+
+```java
+regionMathces(boolean ignoreCase, int toffset, String other, int ooffset, int len)
+```
+- 여러 매개 변수 중에서 값이 다음과 같은 경우에는 결과가 무조건 false로 나온다.
+    - toffset이 음수일 때
+    - ooffset이 음수 일때
+    - toffset+len이 비교 대상의 길이보다 클 때
+    - ooffset + len 이 other 객체의 길이보다 클 때
+    - ignoreCase가 false이 경우에는 비교 범위의 문자들 중 같은 위치(index)에 있는 char가 다를 때
+    - ignoreCase가 true인 경우에는 비교 범위의 문자들을 모두 소문자로 변경한 후 같은 위치 (index)에 있는 char가 달라야 한다.
+
+### Immutable한 String의 단점을 보완하는 클래스에는 StringBuffer와 StringBulider가 있다.
+- StringBuffer는 Thread Safe 하다
+- StringBulider는 Thread Safe 하지 않지만 속도가 빠름.
