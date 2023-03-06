@@ -166,7 +166,7 @@ java.lang.Object
     - java.util.Stack<E> 
 ```
 - 구현 인터페이스는 `Serializable`, `Cloneable`, `Iterable<E>`, `Collection<E>`, `List<E>`, RandomAccess로 ArrayList 클래스에서 구현한 인터페이스와 모두 동일하다.
-- Stack 클래스는 자바에서 상속을 잘못 받은 클래스이다. 
+- Stack 클래스는 자바에서 Vector로부터 상속을 받은 클래스이다.  
 
 |리턴타입|메서드 이름 및 매개 변수|설명|
 |------|--------------------|---|
